@@ -10,8 +10,12 @@ function validURL(str) {
 }
 
 function canvas2bin(canvas) {
-    let image = canvas.getContext("2d");
-    let imageData = image.getImageData(0, 0, canvas.width, canvas.height);
+    let imageData = canvas?.getContext("2d")?.getImageData(0, 0, canvas.width, canvas.height);
+    if (!imageData) {
+        alert('nothing to do here');
+        return false;
+    }
+
     try {
         let result = window.jsQR(imageData.data, imageData.width, imageData.height);
         if (result && validURL(result.data)) {
@@ -30,12 +34,12 @@ function canvas2bin(canvas) {
             );
         }
 
-        alert(result.data);
-    } catch (e) { }
-
+        alert(JSON.stringify(result.data));
+    } catch (e) {
+        console.error(e);
+        alert('Outch! Nothing to do here');
+    }
 }
 
-if (document.querySelector("canvas")) {
-    canvas2bin(document.querySelector("canvas"));
-}
+canvas2bin(document.querySelector("canvas"));
 
