@@ -41,5 +41,27 @@ function canvas2bin(canvas) {
     }
 }
 
-canvas2bin(document.querySelector("canvas"));
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL("image/png");
+  return dataURL.replace(/^data:image\/?[A-z]*;base64,/);
+}
+
+function image2bin(image) {
+    let imageData = getBase64Image(image);
+    let result = window.jsQR(imageData.data, imageData.width, imageData.height);
+
+    alert(result)
+}
+
+document.querySelectorAll("img").forEach(e => {
+    e.addEventListener("click", e => {
+        image2bin(e.target)
+    });
+});
+//canvas2bin(document.querySelector("canvas"));
 
